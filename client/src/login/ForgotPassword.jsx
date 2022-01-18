@@ -15,13 +15,13 @@ function ForgotPassword () {
           email: email
         });
     };
-    if (response.data.message == "Email sent") { 
+    /* if (response.data.message == "Email sent") { 
         setPassStatus(true);
         response.data.message()
         
     } else {
         setPassStatus(false);
-    };
+    }; */
 
     return(
         <div id="wrapper">

@@ -29,10 +29,12 @@ function LoginPage () {
       });
     };
 
+    // Check authentication button
     const userAuthenticated = () => {
       Axios.get("http://localhost:3001/isUserAuth", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
+          // store in local storage??
         },
       }).then((response) => {
         console.log(response);
@@ -90,8 +92,7 @@ function LoginPage () {
                 {/* End of Login Section */}
 
                 {loginStatus && (
-                  <button onClick= {userAuthenticated}> Check if Authenticated</button>
-
+                  <button onClick= {userAuthenticated}> User authenticated </button>
                 )}
 
                 <h1></h1>

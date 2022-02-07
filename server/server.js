@@ -6,12 +6,16 @@ const cors = require("cors");
 const path = require("path");
 const mongoose = require("mongoose");
 
+const jwt = require('jsonwebtoken');
+
 const bodyParser = require("body-parser");
 const cookieParser = require ("cookie-parser");
 const session = require ("express-session");
 
+// encryption
 const bcrypt = require("bcrypt");
 const saltRounds = 10
+
 //const port = process.env.PORT || 3000
 
 // email handling
@@ -276,7 +280,7 @@ const verifyJWT = (req, res, next) => {
 };
 
 app.get('/isUserAuth', verifyJWT, (req, res) => {
-    res.send("You are authenticated")
+    res.send("You are logged in") // you are authenticated
 })
 
 //Login
@@ -302,10 +306,10 @@ app.post('/login', (req, res) => {
                     
                     req.session.user = result;
                     console.log(req.session.user);
-                    res.send({message: "Logged in as " + username});
-                    res.send(result);
+                    //res.send({message: "Logged in as " + username});
+                    //res.send(result); // >> why this?
                     res.json({auth: true, token: token, result: result}) ;
-                       
+                     // ^ this passes all user data, should only pass necessary information 
                    } else {
                         res.json({
                             auth: false,
@@ -316,7 +320,7 @@ app.post('/login', (req, res) => {
                }); 
             } else {
                 res.json({ auth: false, message: "User does not exist"});
-                res.send({ message: "User does not exist."});
+                //res.send({ message: "User does not exist."});
             }
         }
     );

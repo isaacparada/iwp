@@ -9,7 +9,6 @@ import {
     Switch,
     Redirect
   } from "react-router-dom";
-import LoginPage from "./Login";
 
 function Registration () {
 
@@ -21,31 +20,48 @@ function Registration () {
     const [regStatus, setRegStatus] = useState("");
     const [textStatus, setTextStatus] = useState("");
     const [nextAction, setNextAction] = useState("");
+    const regexp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     
     const register = () => {
-      Axios.post("http://localhost:3001/register", {
-        username: usernameReg, 
-        password: passwordReg,
-        firstname: firstNameReg,
-        lastname: lastNameReg
-      }).then((response) => {
-        if (response.data.message){
-            setRegStatus(response.data.message);
-        } console.log(response);
-        setTimeout(() =>{
-            if (response.data.message == "Account successfully created!") {
-                setNextAction(<Route><Redirect to="./Login"/></Route>);
-            }
-        }, 3000);
+        //call validatePass function
+        //let textStatus = "not-determined"
+        // let valid passwords go ahead with backend registration call
+        
+            Axios.post("http://localhost:3001/register", {
+                username: usernameReg,
+                password: passwordReg,
+                firstname: firstNameReg,
+                lastname: lastNameReg
+            }).then((response) => {
 
-        if (response.data.message == "Account successfully created!") {
-            setTextStatus("text-success");
-        } else {
-            setTextStatus("text-danger");
-        };
-
-      });
+                if (response.data.message){
+                    setRegStatus(response.data.message);
+                    if (response.data.message == "Account successfully created!") {
+                        setTextStatus("text-success");
+                    } else {
+                        setTextStatus("text-danger");
+                    }
+                } console.log(response);
+                setTimeout(() => {
+                    if (response.data.message == "Account successfully created!") {
+                        setNextAction(<Route><Redirect to="./Login"/></Route>);
+                    }
+                }, 3000);
+                /* if (response.data.message == "Account successfully created!") {
+                    textStatus = "text-success";
+                } else {
+                    console.log('There was an issue writing to the database:', response.data.message);
+                    textStatus = "text-danger";
+                } */
+            
+        //} else {
+            //setRegStatus(valmessage);
+            //console.log('Password Validation Failed:');
+            //textStatus = "text-danger";
+        
+    })
     };
+
         return(
             <div id = "wrapper">
                 <LoginRibbon />
